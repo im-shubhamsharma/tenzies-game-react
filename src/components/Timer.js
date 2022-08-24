@@ -9,7 +9,7 @@ export default function Timer({ state }) {
   let timer;
   useEffect(() => {
     if (state === "ongoing") {
-      timer = setInterval(() => {
+      timer = setTimeout(() => {
         setTimeData((prevTime) => ({
           seconds: prevTime.seconds === 59 ? 0 : prevTime.seconds + 1,
           minutes:
@@ -18,8 +18,8 @@ export default function Timer({ state }) {
       }, 1000);
     }
 
-    return () => clearInterval(timer);
-  });
+    return () => clearTimeout(timer);
+  }, [timeData, state]);
 
   useEffect(() => {
     if (state === "new game") {
@@ -33,12 +33,13 @@ export default function Timer({ state }) {
       });
     }
   }, [state]);
- 
-  const {seconds, minutes} = timeData
+
+  const { seconds, minutes } = timeData;
   return (
     <div className="timer">
       <p>
-       Time : {minutes<10? "0"+minutes : minutes}  : {seconds<10 ? "0"+seconds : seconds}
+        Time : {minutes < 10 ? "0" + minutes : minutes} :{" "}
+        {seconds < 10 ? "0" + seconds : seconds}
       </p>
     </div>
   );
